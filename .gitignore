@@ -1,0 +1,27 @@
+targetSumApp/node_modules/**/*
+targetSumApp/.expo/*
+targetSumApp/npm-debug.*
+targetSumApp/*.jks
+targetSumApp/*.p8
+targetSumApp/*.p12
+targetSumApp/*.key
+targetSumApp/*.mobileprovision
+targetSumApp/*.orig.*
+targetSumApp/web-build/
+
+# macOS
+targetSumApp/.DS_Store
+
+hello_react_native/node_modules/**/*
+hello_react_native/.expo/*
+hello_react_native/npm-debug.*
+hello_react_native/*.jks
+hello_react_native/*.p8
+hello_react_native/*.p12
+hello_react_native/*.key
+hello_react_native/*.mobileprovision
+hello_react_native/*.orig.*
+hello_react_native/web-build/
+
+# macOS
+hello_react_native/.DS_Store
