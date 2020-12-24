@@ -17,6 +17,7 @@ export default function RandomNumber({ number, isDisable, onPress, id }) {
 
 const styles = StyleSheet.create({
   randomNumber: {
+    borderRadius: 10,
     backgroundColor: "#999",
     width: 100,
     height: 50,

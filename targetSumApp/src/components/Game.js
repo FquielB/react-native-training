@@ -7,6 +7,8 @@ export default function Game({
   randomNumberCount,
   initialSeconds,
   onPlayAgain,
+  calcScore,
+  score,
 }) {
   const [randomNumbers, setRandomNumbers] = useState([]);
   const [target, setTarget] = useState(0);
@@ -16,22 +18,8 @@ export default function Game({
   const intervalId = useRef();
 
   useEffect(() => {
-    let randomNumbersValues = Array.from({ length: randomNumberCount }).map(
-      () => 1 + Math.floor(10 * Math.random())
-    );
-    //SHUFFLE: randomNumbersValues
-    setRandomNumbers(shuffle(randomNumbersValues));
-
-    setTarget(
-      randomNumbersValues
-        .slice(0, randomNumberCount - 2)
-        .reduce((acc, curr) => acc + curr, 0)
-    );
-
-    intervalId.current = setInterval(() => {
-      setRemainingSeconds((prevRemainingSecond) => prevRemainingSecond - 1);
-    }, 1000);
-
+    initNumbers();
+    initTimer();
     return () => {
       clearInterval(intervalId.current);
     };
@@ -49,6 +37,30 @@ export default function Game({
       setGameState(gameStatus());
     }
   }, [selectedIds]);
+
+  useEffect(() => {
+    if (gameState !== "PLAYING") {
+      calcScore(remainingSeconds, gameState);
+    }
+  }, [gameState]);
+
+  const initNumbers = () => {
+    let randomNumbersValues = Array.from({ length: randomNumberCount }).map(
+      () => 1 + Math.floor(10 * Math.random())
+    );
+    setRandomNumbers(shuffle(randomNumbersValues));
+    setTarget(
+      randomNumbersValues
+        .slice(0, randomNumberCount - 2)
+        .reduce((acc, curr) => acc + curr, 0)
+    );
+  };
+
+  const initTimer = () => {
+    intervalId.current = setInterval(() => {
+      setRemainingSeconds((prevRemainingSecond) => prevRemainingSecond - 1);
+    }, 1000);
+  };
 
   const isNumberSelected = (numberIndex) => {
     return selectedIds.indexOf(numberIndex) != -1;
@@ -76,6 +88,7 @@ export default function Game({
   };
   return (
     <View style={styles.container}>
+      <Text style={styles.score}>Score: {score}</Text>
       <Text style={[styles.target, styles[`STATUS_${gameState}`]]}>
         {target}
       </Text>
@@ -90,27 +103,32 @@ export default function Game({
           />
         ))}
       </View>
-      {gameState !== "PLAYING" && (
-        <Button title="Play Again" onPress={onPlayAgain} />
-      )}
-      <Text>{remainingSeconds}</Text>
+
+      <View style={styles.playAgainBtn}>
+        {gameState !== "PLAYING" ? (
+          <Button title="Play Again" onPress={() => onPlayAgain(gameState)} />
+        ) : null}
+      </View>
+      <Text style={styles.timer}>Time left: {remainingSeconds}</Text>
     </View>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: "#ddd",
+    backgroundColor: "white",
     flex: 1,
   },
   target: {
+    borderRadius: 10,
     fontSize: 50,
     margin: 50,
+    marginTop: 20,
     textAlign: "center",
   },
   randomNumbersContainer: {
     flexWrap: "wrap",
-    flex: 1,
+    flex: 0.9,
     flexDirection: "row",
     justifyContent: "space-around",
   },
@@ -122,5 +140,16 @@ const styles = StyleSheet.create({
   },
   STATUS_LOST: {
     backgroundColor: "red",
+  },
+  timer: {
+    fontSize: 42,
+  },
+  score: {
+    marginTop: 40,
+    fontSize: 24,
+  },
+  playAgainBtn: {
+    flex: 0.1,
+    marginHorizontal: 20,
   },
 });
