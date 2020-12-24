@@ -1,0 +1,20 @@
+{
+    "liveServer.settings.donotShowInfoMsg": true,
+    "files.autoSave": "off",
+    "explorer.confirmDelete": false,
+    "explorer.confirmDragAndDrop": false,
+    "git.enableSmartCommit": true,
+    "git.autofetch": true,
+    "git.confirmSync": false,
+    "window.zoomLevel": 0,
+    "liveServer.settings.donotVerifyTags": true,
+    "terminal.integrated.shell.windows": "C:\\windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe",
+    "javascript.updateImportsOnFileMove.enabled": "always",
+    "editor.defaultFormatter": "esbenp.prettier-vscode",
+    "[javascript]": {
+      "editor.defaultFormatter": "esbenp.prettier-vscode",
+      "editor.formatOnSave": true
+    },
+    // Set the default
+    "editor.formatOnSave": false,
+}
