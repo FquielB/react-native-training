@@ -1,3 +1,5 @@
+ABRIR SETTINGS DE VSCODE COMO JSON, REEMPLAZAR POR ESTO, TENER INSTALADO LA EXTENSION DE PRETTIER
+
 {
     "liveServer.settings.donotShowInfoMsg": true,
     "files.autoSave": "off",
