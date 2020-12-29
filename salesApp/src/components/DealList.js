@@ -3,7 +3,7 @@ import { View, StyleSheet, FlatList } from "react-native";
 
 import DealItem from "./DealItem";
 
-export default function dealList({ deals, onItemPress }) {
+export default function DealList({ deals, onItemPress }) {
   return (
     <View style={styles.list}>
       <FlatList
@@ -18,9 +18,7 @@ export default function dealList({ deals, onItemPress }) {
 
 const styles = StyleSheet.create({
   list: {
-    backgroundColor: "#eee",
     flex: 1,
-    width: "100%",
-    paddingTop: 50,
+    width: 420,
   },
 });

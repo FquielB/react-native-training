@@ -33,7 +33,7 @@ const styles = StyleSheet.create({
   itemContainer: {
     backgroundColor: "white",
     borderWidth: 1,
-    borderColor: "#94938f",
+    borderColor: "#94938f56",
     marginVertical: 10,
     marginHorizontal: 20,
     elevation: 2,

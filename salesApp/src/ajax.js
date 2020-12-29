@@ -15,4 +15,10 @@ export default {
       .then((response) => response.data)
       .catch((errMsg) => console.error(errMsg));
   },
+  async requestDealsSearch(searchTerm) {
+    return axios
+      .get(`${apiHost}/api/deals?searchTerm=${searchTerm}`)
+      .then((response) => response.data)
+      .catch((errMsg) => console.error(errMsg));
+  },
 };
