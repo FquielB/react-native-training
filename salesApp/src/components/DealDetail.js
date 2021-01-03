@@ -1,11 +1,62 @@
-import React, { useEffect, useState } from "react";
-import { View, Image, Text, StyleSheet, TouchableOpacity } from "react-native";
+import React, { useEffect, useRef, useState } from "react";
+import {
+  View,
+  Image,
+  Text,
+  StyleSheet,
+  TouchableOpacity,
+  PanResponder,
+  Animated,
+  Dimensions,
+  Button,
+  Linking,
+} from "react-native";
 
 import { priceDisplay } from "../util";
 import ajax from "../ajax";
 
 export default function DealDetail({ initialDealData, onBack }) {
+  const width = Dimensions.get("window").width;
+  const imageXPos = new Animated.Value(0);
+  const indexDirectionRef = useRef(0);
+  const imagePanResponder = PanResponder.create({
+    onStartShouldSetPanResponder: () => true,
+    onPanResponderMove: (evt, gs) => {
+      imageXPos.setValue(gs.dx);
+    },
+    onPanResponderRelease: (evt, gs) => {
+      if (Math.abs(gs.dx) > width * 0.3) {
+        const direction = Math.sign(gs.dx);
+        Animated.timing(imageXPos, {
+          toValue: direction * width,
+          duration: 250,
+          useNativeDriver: false,
+        }).start(() => {
+          indexDirectionRef.current = -1 * direction;
+          handleSwipe();
+        });
+      } else {
+        Animated.spring(imageXPos, {
+          toValue: 0,
+          useNativeDriver: false,
+        }).start();
+      }
+    },
+  });
+
+  const handleSwipe = () => {
+    if (!deal.media[imageIndex + indexDirectionRef.current]) {
+      Animated.spring(imageXPos, {
+        toValue: 0,
+        useNativeDriver: false,
+      }).start();
+      return;
+    }
+    setImageIndex((prevImage) => prevImage + indexDirectionRef.current);
+  };
+
   const [deal, setDeal] = useState(initialDealData);
+  const [imageIndex, setImageIndex] = useState(0);
 
   useEffect(() => {
     const ac = new AbortController();
@@ -13,6 +64,18 @@ export default function DealDetail({ initialDealData, onBack }) {
 
     return () => ac.abort();
   });
+
+  useEffect(() => {
+    imageXPos.setValue(indexDirectionRef.current * width);
+    Animated.spring(imageXPos, {
+      toValue: 0,
+      useNativeDriver: false,
+    }).start();
+  }, [imageIndex]);
+
+  const openDealURL = () => {
+    Linking.openURL(deal.url);
+  };
 
   return (
     <View style={styles.container}>
@@ -24,7 +87,11 @@ export default function DealDetail({ initialDealData, onBack }) {
         <Text style={styles.back}>Back</Text>
       </TouchableOpacity>
       <View style={styles.itemContainer}>
-        <Image source={{ uri: deal.media[0] }} style={styles.image} />
+        <Animated.Image
+          {...imagePanResponder.panHandlers}
+          source={{ uri: deal.media[imageIndex] }}
+          style={[styles.image, { left: imageXPos }]}
+        />
         <Text style={styles.title}>{deal.title}</Text>
         <View style={styles.info}>
           <View style={styles.headerDetails}>
@@ -44,6 +111,7 @@ export default function DealDetail({ initialDealData, onBack }) {
           </View>
           <Text style={styles.description}>{deal.description}</Text>
         </View>
+        <Button title="Buy this deal" onPress={openDealURL} />
       </View>
     </View>
   );
@@ -52,27 +120,21 @@ export default function DealDetail({ initialDealData, onBack }) {
 const styles = StyleSheet.create({
   container: {
     marginVertical: 50,
-    marginHorizontal: 20,
   },
   back: {
     fontWeight: "bold",
     fontSize: 24,
     paddingBottom: 10,
     color: "#22f",
+    marginHorizontal: 20,
   },
   itemContainer: {
     backgroundColor: "white",
-    borderWidth: 1,
-    borderColor: "#94938f56",
-    elevation: 2,
-    borderRadius: 10,
   },
   image: {
     width: "100%",
     height: 150,
     resizeMode: "cover",
-    borderTopLeftRadius: 10,
-    borderTopRightRadius: 10,
   },
   info: {
     paddingHorizontal: 10,

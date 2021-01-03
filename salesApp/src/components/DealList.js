@@ -19,6 +19,6 @@ export default function DealList({ deals, onItemPress }) {
 const styles = StyleSheet.create({
   list: {
     flex: 1,
-    width: 420,
+    width: "100%",
   },
 });

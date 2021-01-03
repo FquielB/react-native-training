@@ -1,17 +1,36 @@
 import React, { useEffect, useState } from "react";
-import { Text, View, StyleSheet } from "react-native";
+import {
+  Text,
+  View,
+  StyleSheet,
+  Animated,
+  Easing,
+  Dimensions,
+} from "react-native";
 
 import ajax from "./src/ajax";
 import { DealDetail, DealList, SearchBar } from "./src/components";
 
 export default function App() {
+  let titleXPos = new Animated.Value(0);
   const [deals, setDeals] = useState([]);
   const [dealsFromSearch, setDealsFromSearch] = useState([]);
   const [currentDealId, setCurrentDealId] = useState();
+
+  const AnimateTitle = (direction = 1) => {
+    const windowWidth = Dimensions.get("window").width - 135;
+    Animated.timing(titleXPos, {
+      toValue: (windowWidth / 2) * direction,
+      useNativeDriver: false,
+      duration: 1000,
+      easing: Easing.ease,
+    }).start(({ finished }) => finished && AnimateTitle(-1 * direction));
+  };
+
   useEffect(() => {
+    AnimateTitle();
     const ac = new AbortController();
     ajax.requestInitialDeals().then((data) => setDeals(data));
-
     return () => ac.abort();
   }, []);
 
@@ -44,7 +63,9 @@ export default function App() {
           />
         </View>
       ) : (
-        <Text style={styles.header}>Sales!</Text>
+        <Animated.View style={[{ left: titleXPos }]}>
+          <Text style={styles.header}>Sales!</Text>
+        </Animated.View>
       )}
     </View>
   );
