@@ -1,16 +1,27 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { TextInput, StyleSheet } from "react-native";
 import debounce from "lodash.debounce";
 
-export default function SearchBar({ searchDeals }) {
-  const [searchTerm, setSearchTerm] = useState("");
-  const debouncedSearchDeals = debounce(searchDeals, 300);
+export default function SearchBar({ searchDeals, initialSearchTerm }) {
+  const [searchTerm, setSearchTerm] = useState(initialSearchTerm);
+  const inputElementRef = useRef();
+
+  const debouncedSearchDeals = debounce(searchDealsInt, 300);
   useEffect(() => {
     debouncedSearchDeals(searchTerm);
   }, [searchTerm]);
 
+  function searchDealsInt(searchDealTerm) {
+    searchDeals(searchDealTerm);
+    inputElementRef.current.blur();
+  }
+
   return (
     <TextInput
+      ref={(inputElement) => {
+        inputElementRef.current = inputElement;
+      }}
+      value={searchTerm}
       placeholder="Search"
       style={styles.input}
       onChangeText={setSearchTerm}

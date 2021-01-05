@@ -21,7 +21,8 @@
     "@babel/core": "~7.9.0",
     "babel-eslint": "^10.1.0",
     "eslint": "^7.16.0",
-    "eslint-plugin-react": "^7.21.5"
+    "eslint-plugin-react": "^7.21.5",
+    "react-native-make": "^1.0.1"
   },
   "private": true
 }

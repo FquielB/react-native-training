@@ -10,6 +10,7 @@ import {
   Dimensions,
   Button,
   Linking,
+  ScrollView,
 } from "react-native";
 
 import { priceDisplay } from "../util";
@@ -93,7 +94,7 @@ export default function DealDetail({ initialDealData, onBack }) {
           style={[styles.image, { left: imageXPos }]}
         />
         <Text style={styles.title}>{deal.title}</Text>
-        <View style={styles.info}>
+        <ScrollView style={styles.info}>
           <View style={styles.headerDetails}>
             <View style={styles.simpleDetails}>
               <Text style={styles.price}>{priceDisplay(deal.price)}</Text>
@@ -110,8 +111,10 @@ export default function DealDetail({ initialDealData, onBack }) {
             )}
           </View>
           <Text style={styles.description}>{deal.description}</Text>
+        </ScrollView>
+        <View style={styles.button}>
+          <Button title="Buy this deal" onPress={openDealURL} />
         </View>
-        <Button title="Buy this deal" onPress={openDealURL} />
       </View>
     </View>
   );
@@ -177,5 +180,8 @@ const styles = StyleSheet.create({
   },
   description: {
     marginVertical: 10,
+  },
+  button: {
+    margin: 20,
   },
 });

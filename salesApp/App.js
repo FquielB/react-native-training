@@ -16,6 +16,7 @@ export default function App() {
   const [deals, setDeals] = useState([]);
   const [dealsFromSearch, setDealsFromSearch] = useState([]);
   const [currentDealId, setCurrentDealId] = useState();
+  const [activeSearchTerm, setActiveSearchTerm] = useState("");
 
   const AnimateTitle = (direction = 1) => {
     const windowWidth = Dimensions.get("window").width - 135;
@@ -40,9 +41,10 @@ export default function App() {
 
   const searchDeals = (searchTerm) => {
     searchTerm
-      ? ajax
-          .requestDealsSearch(searchTerm)
-          .then((data) => setDealsFromSearch(data))
+      ? ajax.requestDealsSearch(searchTerm).then((data) => {
+          setDealsFromSearch(data);
+          setActiveSearchTerm(searchTerm);
+        })
       : setDealsFromSearch([]);
   };
 
@@ -56,7 +58,10 @@ export default function App() {
     <View style={styles.container}>
       {deals.length > 0 ? (
         <View>
-          <SearchBar searchDeals={searchDeals} />
+          <SearchBar
+            initialSearchTerm={activeSearchTerm}
+            searchDeals={searchDeals}
+          />
           <DealList
             deals={dealsFromSearch.length > 0 ? dealsFromSearch : deals}
             onItemPress={setCurrentDealId}
