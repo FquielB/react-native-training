@@ -13,10 +13,5 @@ ABRIR SETTINGS DE VSCODE COMO JSON, REEMPLAZAR POR ESTO, TENER INSTALADO LA EXTE
     "terminal.integrated.shell.windows": "C:\\windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe",
     "javascript.updateImportsOnFileMove.enabled": "always",
     "editor.defaultFormatter": "esbenp.prettier-vscode",
-    "[javascript]": {
-      "editor.defaultFormatter": "esbenp.prettier-vscode",
-      "editor.formatOnSave": true
-    },
-    // Set the default
-    "editor.formatOnSave": false,
+    "editor.formatOnSave": true
 }
